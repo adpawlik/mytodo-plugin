@@ -1,5 +1,19 @@
 <?php
 
+function mytodoapp_files(){ 
+    wp_enqueue_style('mytodoapp-style', plugin_dir_url( __FILE__ ) . '../assets/temp/css/custom.min.css');
+    wp_enqueue_style('googleFont-open-sans', 'https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap&subset=latin-ext');
+    wp_enqueue_script('mytodoapp-scripts', plugin_dir_url( __FILE__ ) . '../assets/temp/scripts/App.js', null, array(), true);
+
+    wp_localize_script('mytodoapp-scripts', 'mytodoappData', array(
+        'root_url' => get_site_url(),
+        'nonce' => wp_create_nonce('wp_rest')
+    ));
+}
+
+add_action('wp_enqueue_scripts', 'mytodoapp_files');
+
+
 function mytodoap_post_types(){
     register_post_type('mytodoapp', array(
         'show_in_rest' => true,
@@ -45,7 +59,7 @@ function mytodoapp_shortcode() {
             $input_text = get_post_meta( get_the_ID(), 'mytodoapp_checkbox_value', true );
             $inputChecked = ( isset( $input_text ) && '' !== $input_text && 'yes' === $input_text ) ? 'yes' : 0;
           ?>
-          <li data-id="<?php the_ID(); ?>" id="post-<?php the_ID(); ?>" class="mytodoapp-item post-<?php the_ID(); ?>">
+          <li data-id="<?php the_ID(); ?>" id="post-<?php the_ID(); ?>" class="mytodoapp-item-js mytodoapp-item post-<?php the_ID(); ?>">
               <div class="mytodoapp-list-item-checkbox-wrapper">
                   <input class="mytodoapp-list-item-checkbox" type="checkbox" name="mytodoapp_checkbox_value" value="yes" 
                   <?php checked( $inputChecked, 'yes' ); ?> />
@@ -63,3 +77,34 @@ function mytodoapp_shortcode() {
   }
 }
 add_shortcode( 'mytodoapp', 'mytodoapp_shortcode' );
+
+function mytodoap_make_list_private($data, $postarr){
+    if ($data['post_type'] == 'mytodoapp'){
+        $data['post_title'] = sanitize_text_field($data['post_title']);
+    }
+    if($data['post_type'] == 'mytodoapp' AND $data['post_status'] != 'trash'){
+        $data['post_status'] = "private";
+    }
+    return $data;
+}
+add_filter('wp_insert_post_data', 'mytodoap_make_list_private', 10, 2);
+
+
+function mytodoapp_redirect() {
+    global $post;
+    if (!is_user_logged_in() && $post->post_title == 'My to do app'){
+        wp_redirect(esc_url(site_url('/')));
+        exit;
+    }
+}
+add_action( 'template_redirect', 'mytodoapp_redirect' );
+
+
+function mytodoap_disable_title_prefix( $format, $post ) {
+    if ( 'mytodoapp' === $post->post_type) {
+        $format = '%s';
+    }
+    return $format;
+}
+add_filter( 'private_title_format', 'mytodoap_disable_title_prefix', 99, 2 );
+add_filter( 'protected_title_format', 'mytodoap_disable_title_prefix', 99,2  );

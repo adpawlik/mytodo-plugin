@@ -1,0 +1,117 @@
+.mytodoapp-alerts {
+  margin: 0 auto;
+  width: 250px;
+  max-width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #8b8f97;
+  
+}
+
+.mytodoapp-list {
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+  list-style: none;
+  padding: 0;
+  width: 250px;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid #e3e1e1;
+  box-shadow: 0px 2px 2px -1px rgba(225,222,222,1);
+
+
+}
+
+.mytodoapp-item:not(:last-child) {
+  border-bottom: 1px solid #e3e1e1;
+}
+
+.mytodoapp-item {
+  position: relative;
+  display: flex;
+}
+
+.mytodoapp-delete {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 10px;
+  opacity:0;
+  transition: opacity .3s;
+  .mytodoapp-item:hover &{
+      opacity: 1;
+  }
+}
+
+.mytodoapp-list-item-checkbox-wrapper {
+  flex: 0 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #f2e3df;
+  margin-right: 4px;
+}
+
+.mytodoapp-list-item-checkbox {
+  appearance: none;
+  position: relative;
+  width: 15px;
+  height: 15px;
+  background-color: #faf9f9;
+  border: 1px solid #6bb3ca;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &:checked {
+      background-color: #fdfdfd;
+      border: 1px solid #c8c8c8;
+      &::after {
+          content: '\2713';
+          font-size: 10px;
+          color: #cccecf;
+      }
+  }
+  &:focus {
+      outline: none;
+  }
+}
+
+.mytodoapp-list-item-title-wrapper {
+  border-left: 1px solid #f2e3df;
+  flex-grow: 1;
+}
+
+.mytodoapp-list-item-title,
+.mytodoapp-task-title {
+  border: none;
+  padding: 10px 30px 10px 10px; 
+  font-size: 14px;
+  color: #8b8f97;
+  width: 100%;
+  border: 1px solid transparent;
+  font-weight: 700;
+  &:focus {
+      outline: none;
+      border-color: #6bb3ca; 
+  }
+}
+
+.mytodoapp-task-title {
+  padding-top: 18px;
+  background: transparent;
+  &::placeholder {
+      color: #c0c6d2;
+  }
+}
+
+.mytodoapp-add {
+  background: #f3f3f3;
+  .mytodoapp-list-item-checkbox-wrapper {
+      padding-top: 8px;
+  }
+}
