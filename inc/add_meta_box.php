@@ -34,3 +34,12 @@ function mytodoapp_save_metaboxes( $post_id ) {
 	update_post_meta( $post_id, 'mytodoapp_checkbox_value', esc_attr( $mytodoapp_checkbox_value ) );
 }
 add_action( 'save_post', 'mytodoapp_save_metaboxes' );
+
+
+add_action( 'rest_api_init', function () {
+	register_rest_field( 'mytodoapp', 'mytodoapp_metabox', array(
+			'get_callback' => function( $post_arr ) {
+					return get_post_meta( $post_arr['id'], '', true );
+			},
+	) );
+} );
