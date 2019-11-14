@@ -8,3 +8,6 @@ Author: Adrian Pawlik
 Author URI: https://pawlikadrian.pl
 Text Domain: mytodoapp
 */
+
+include_once('inc/functions.php');
+include_once('inc/add_meta_box.php');
