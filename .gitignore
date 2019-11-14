@@ -1,7 +1,2 @@
 # Files
 node_modules/
-gulpfile.js
-settings.js
-webpack.config.js
-package.json
-package-lock.json
